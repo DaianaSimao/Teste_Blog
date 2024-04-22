@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Blog Post - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Post content-->
+          <article>
+            <!-- Post header-->
+            <header class="mb-4">
+              <!-- Post title-->
+              <h1 class="fw-bolder mb-1"><%= @post.titulo%></h1>
+              <!-- Post meta content-->
+              <div class="text-muted fst-italic mb-2">
+                  <%= t('views.posted') %> <%= l(@post.created_at) %> 
+                  <%= t('views.by') %> <%= @post.user.perfil.nome.capitalize rescue nil %>
+              </div>
+              <!-- Post categories-->
+              <% @tags.each do |tag|%>
+                <a class="badge bg-secondary text-decoration-none link-light" href="#!"><%= tag.tag.nome %></a>
+              <% end %>
+            </header>
+            <section class="mb-5">
+              <p class="fs-5 mb-4"><%= @post.body %></p>
+              <% if user_signed_in? && current_user.id == @post.user_id %>
+              <div class="d-flex justify-content-start">
+                <%= link_to t('views.editar_post'), edit_post_path(@post) , class: "btn btn-outline-primary "%>
+                <%= button_to t('views.deletar_post'), @post, method: :delete, data: { turbo_confirm: t('views.mensagem_deletar') }, class: "btn btn-outline-danger", style: "margin-left: 10px;" %>
+              </div>
+              <% end %>
+            </section>
+          </article>
+          <section class="mb-5">
+            <div class="card bg-light">
+              <div class="card-body">
+                <turbo-frame id="comment_form">
+                  <%= form_with(model: [@post, Comentario.new], id: "new_comment", data: { controller: "form", action: "turbo:submit-end->form#reset" }) do |form| %>
+                    <%= form.text_area :body, class: "form-control mb-3", rows: "3", placeholder: t('views.junte_se') %>
+                    <div>
+                      <%= form.submit t('views.enviar_comentario'), class: "btn btn-outline-dark mb-2" %>
+                      <%= form.hidden_field :autor, value: current_user.nil? ? "Anonimo" : current_user.perfil.nome.capitalize %>
+                      <%= form.hidden_field :user_id, value: current_user.nil? ? "" : current_user.id %>
+                    </div>
+                  <% end %>
+                </turbo-frame>
+
+                <turbo-frame id="comments">
+                 <div class="comments-container" style="max-height: 300px; overflow-y: auto;">
+                  <% @post.comentarios.each do |comentario| %>
+                    <div class="card mb-4">
+                      <div class="card-body">
+                        <div class="d-flex mb-2">
+                          <div class="flex-shrink-0">
+                            <%= image_tag("perfil.png", width: 45, height: 50, class: "rounded-circle") %>
+                          </div>
+                          <div class="ms-3">
+                            <div class="fw-bold"><%= comentario.autor %></div>
+                            <%= comentario.body %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+                </turbo-frame>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Myblog</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container"><a class="navbar-brand" href="#!">My Blog</a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item"><%= link_to 'Home', root_path, class: "nav-link", data: { turbo: false } %></a></li>
+            <% if user_signed_in? %>
+              <li class="nav-item"><%= link_to t('views.my_account'), user_details_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to t('views.sair'), destroy_user_session_path, method: :delete, class: "nav-link" %></li>
+            <% else %>
+              <li class="nav-item"><%= link_to t('views.entrar'), new_user_session_path, class: "nav-link", data: { turbo: false } %></li>
+              <li class="nav-item"><%= link_to t('views.registrar'), new_user_registration_path, class: "nav-link" %></li>
+            <% end %>
+          </ul>
+        </div>
+        <%= link_to image_tag('pt.png', width:'30px', alt: 'PT-BR'), root_path(locale: 'pt-BR'), class:"nav-link", style: "margin-right: 10px;" %>
+        <%= link_to image_tag('en.png', width:'30px', alt: 'EN'), root_path(locale: 'en'), class:"nav-link" %>
+      </div>
+    </nav>
+    <div class="container mb-3">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-<%= type == "alert"? "danger" : "success" %> alert-dismissible fade show mt-3 mb-3" role="alert">
+          <%= message %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      <% end %>
+    </div>
+    <div style="margin-botton: 150px;">
+      <div class="container mt-5">
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+  
+  <footer class=" fixed-bottom bg-dark text-white py-3">
+    <div class="container text-center">
+      <p class="m-0">Copyright &copy; Daiana Simão <%= Date.current.year %></p>
+    </div>
+  </footer>
+</html>

@@ -1,0 +1,14 @@
+<%= f.fields_for :perfil_attributes do |perfil_fields| %>
+  <div class="form-data">
+    <%= perfil_fields.label t('views.nome') %><br />
+    <%= perfil_fields.text_field :nome, placeholder: t('views.nome'), class: "form-control w-100", required: true %>
+  </div>
+  <div class="form-data">
+    <%= perfil_fields.label t('views.sobrenome') %><br />
+    <%= perfil_fields.text_field :sobrenome, placeholder: t('views.sobrenome'), class: "form-control w-100", required: true %>
+  </div>
+  <div class="form-data">
+    <%= perfil_fields.label t('views.bio') %><br />
+    <%= perfil_fields.text_area :bio, placeholder: t('views.sobre_voce'), class: "form-control w-100", required: true %>
+  </div>
+<% end %>

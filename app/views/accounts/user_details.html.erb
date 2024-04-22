@@ -1,0 +1,57 @@
+  <div class="container py-5">
+  <div class="d-flex justify-content-center">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card mb-4" style="background-color: #DCDCDC;">
+          <div class="card-body text-center">
+            <%= image_tag("perfil.png", width: 150, class: "rounded-circle img-fluid") %>
+
+            <h5 class="my-3"><%= @user.perfil.nome %> <%= @user.perfil.sobrenome %></h5>
+            <p class="text-muted mb-1">Posts: <%= @post_count %> </p>
+            <p class="text-muted mb-4"><%= t('views.comentarios') %> <%= @comentarios_count %> </p>
+            <div class="d-flex justify-content-center mb-2">
+              <%= link_to t('buttons.editar_perfil'), edit_user_registration_path(@user), class: "btn btn-outline-primary ms-1" %>
+              <%= link_to t('buttons.editar_senha'), change_password_path(@user), class: "btn btn-outline-secondary ms-1" %>
+              <%= link_to "Posts", posts_details_path, class: "btn btn-outline-dark ms-1", data: { turbo: false } %>
+              <%= link_to t('buttons.new_post'),new_post_path, class: "btn btn-outline-success ms-1", data: { turbo: false } %>
+              <%= link_to "Upload Post",upload_post_path, class: "btn btn-outline-primary ms-1", data: { turbo: false } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="card mb-4 " style="background-color: #DCDCDC;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0"><%= t('views.nome') %></p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%= @user.perfil.nome %> <%= @user.perfil.sobrenome %></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%= @user.email %></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0"><%= t('views.bio') %></p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%= @user.perfil.bio %></p>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

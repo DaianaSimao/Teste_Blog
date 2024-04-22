@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Blog Post - Start Bootstrap Template</title>
+
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  </head>
+  <body>
+    <!-- Page content-->
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Post content-->
+          <article>
+            <!-- Post header-->
+            <header class="mb-4">
+              <!-- Post title-->
+              
+              <h1 class="fw-bolder mb-1">
+                <%= t('views.welcome') %>
+                <% if user_signed_in? %>
+                  <%= current_user.perfil.nome%>!
+                <% end %>
+                </h1><br><br>
+              <% if user_signed_in? %>
+                <%= link_to I18n.translate('buttons.new_post'),new_post_path, class: "btn btn-outline-success ms-1", data: { turbo: false } %>
+                <%= link_to "Upload Post",upload_post_path, class: "btn btn-outline-primary ms-1", data: { turbo: false } %>
+              <br><br>
+              <% end %>
+              <% @posts.each do |post| %>
+              <h3 class="fw-bolder mb-1"><%=post.titulo.capitalize%></h3>
+              <!-- Post meta content-->
+              <div class="text-muted fst-italic mb-2">
+                  <%= t('views.posted') %> <%= l(post.created_at) %> 
+                  <%= t('views.by') %> <%= post.user.perfil.nome.capitalize rescue nil %>
+              </div>
+              <!-- Post categories-->
+              <% post.tags.each do |tag|%>
+                <a class="badge bg-secondary text-decoration-none link-light" href="#!"><%= tag.nome %></a>
+              <% end %>
+            </header>
+            <section>
+              <p class="fs-5"><%= post.body %></p>
+            </section>
+            <%= link_to t('buttons.comment'), post_path(post) , class: "mb-5 btn btn-outline-dark" %>
+          </article>
+        <% end %>
+        <div class="digg_pagination mb-5">
+          <%= will_paginate @posts , page_links: true %>
+        </div>
+        </div>
+        <!-- Side widgets-->
+        <div class="col-lg-4">
+          <!-- Search widget-->
+          <div class="card mb-4 " style="background-color: #DCDCDC;">
+            <div class="card-header"><%= t('views.pesquisar_tags')%></div>
+            <%= form_tag home_index_path, method: 'get', data: { turbo: false }  do %>
+              <div class="card-body">
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:searh], class: "form-control", id: "search-input"%>
+                  <%= button_tag(value: "commit", type: 'submit', class: "btn btn-primary") do %>
+                    <i class="bi bi-search-heart-fill"></i>
+                  <% end %>
+                </div>
+                <div id="suggestions-container"></div>
+              </div>
+            <% end %>
+          </div>
+          <!-- Categories widget-->
+          <div class="card mb-4" style="background-color: #DCDCDC;">
+            <div class="card-header"><%= t('views.top_tags') %></div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <ul class="list-unstyled mb-0">
+                    <li class="tags-animadas"><%= @top_tags[0].nome %></li>
+                    <li class="tags-animadas"><%= @top_tags[1].nome %></a></li>
+                    <li class="tags-animadas"><%= @top_tags[2].nome %></a></li>
+                  </ul>
+                </div>
+                <div class="col-sm-6">
+                  <ul class="list-unstyled mb-0">
+                    <li class="tags-animadas"><%= @top_tags[3].nome %></li>
+                    <li class="tags-animadas"><%= @top_tags[4].nome %></li>
+                    <li class="tags-animadas"><%= @top_tags[5].nome %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<style>
+.tags-animadas {
+  color: #6959CD;
+  animation: animate 2.7s linear infinite;
+  font-weight: bold;
+}
+@keyframes animate {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+</style>
